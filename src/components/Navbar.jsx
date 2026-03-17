@@ -20,10 +20,10 @@ export default function Navbar({ algo, isDark, running, onAlgoChange, onThemeTog
             boxShadow: `0 2px 8px ${ALGORITHMS[algo].accent}55`,
           }}
         >
-          A
+          Kduong
         </div>
         <span className="navbar__wordmark" style={{ color: T.text }}>
-          AlgoViz
+          Algorithm Visualizer 
         </span>
       </div>
 
