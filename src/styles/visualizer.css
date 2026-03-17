@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Bar state keyframes ─────────────────────────────────────────────────── */
+@keyframes barCompare {
+  0%   { transform: scaleY(1)    translateY(0);     filter: brightness(1); }
+  30%  { transform: scaleY(1.04) translateY(-4px);  filter: brightness(1.3); }
+  70%  { transform: scaleY(1.04) translateY(-4px);  filter: brightness(1.3); }
+  100% { transform: scaleY(1)    translateY(0);     filter: brightness(1); }
+}
+
+@keyframes barSwap {
+  0%   { transform: scaleX(1)    translateY(0);     filter: brightness(1); }
+  20%  { transform: scaleX(1.08) translateY(-8px);  filter: brightness(1.5); }
+  50%  { transform: scaleX(0.94) translateY(-12px); filter: brightness(1.8); }
+  80%  { transform: scaleX(1.08) translateY(-4px);  filter: brightness(1.4); }
+  100% { transform: scaleX(1)    translateY(0);     filter: brightness(1); }
+}
+
+@keyframes barPivot {
+  0%,  100% { transform: scaleY(1)    translateY(0); }
+  50%        { transform: scaleY(1.06) translateY(-6px); }
+}
+
+@keyframes barSorted {
+  0%   { transform: scaleY(0.92); opacity: 0.5; }
+  60%  { transform: scaleY(1.05); opacity: 1; }
+  100% { transform: scaleY(1);    opacity: 1; }
+}
+
+/* ─── Bar classes ─────────────────────────────────────────────────────────── */
+.bar {
+  transform-origin: bottom center;
+  will-change: transform, background-color, height;
+  transition: height 0.08s ease, background-color 0.08s ease;
+  border-radius: 3px 3px 0 0;
+}
+
+.bar--idle      { animation: none; }
+.bar--comparing { animation: barCompare 0.22s ease forwards; }
+.bar--swapping  { animation: barSwap    0.25s ease forwards; }
+.bar--pivot     { animation: barPivot   0.4s  ease infinite; }
+.bar--sorted    { animation: barSorted  0.3s  ease forwards; }
+
+/* ─── UI keyframes ────────────────────────────────────────────────────────── */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes countUp {
+  from { transform: translateY(4px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes successPop {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes themeSwitch {
+  0%   { opacity: 0; transform: scale(0.97); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Layout / theme ──────────────────────────────────────────────────────── */
+.theme-root {
+  animation: themeSwitch 0.25s ease;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ─── Navbar ──────────────────────────────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+  backdrop-filter: blur(12px);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-right: 4px;
+}
+
+.navbar__logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.navbar__wordmark {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+}
+
+.navbar__tabs {
+  display: flex;
+  gap: 3px;
+  border-radius: 10px;
+  padding: 3px;
+  transition: background 0.3s;
+}
+
+.navbar__spacer { flex: 1; }
+
+.navbar__theme-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+/* ─── Algo tab button ─────────────────────────────────────────────────────── */
+.algo-tab {
+  padding: 5px 14px;
+  border-radius: 8px;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.algo-tab:hover:not(:disabled) { opacity: 0.85; }
+.algo-tab:disabled { cursor: not-allowed; opacity: 0.4; }
+
+/* ─── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  border-radius: 13px;
+}
+
+.card--clickable {
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.card--clickable:hover {
+  transform: translateY(-1px);
+}
+
+/* ─── Controls bar ────────────────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 18px;
+  transition: border-color 0.3s;
+}
+
+.controls__divider {
+  width: 1px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+.btn {
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:active { transform: scale(0.96); }
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn--primary {
+  padding: 7px 20px;
+  border-radius: 9px;
+  font-weight: 600;
+  font-size: 13px;
+  min-width: 96px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn--secondary {
+  padding: 7px 14px;
+  border-radius: 9px;
+  font-weight: 500;
+  font-size: 13px;
+  background: transparent;
+}
+
+/* ─── Slider ──────────────────────────────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="range"]:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.slider-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.slider-label__text {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.slider-label__value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  min-width: 28px;
+}
+
+/* ─── Status badges ───────────────────────────────────────────────────────── */
+.status {
+  margin-left: auto;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.status__sorted {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #10b981;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: #10b98118;
+  border: 1px solid #10b98133;
+  animation: successPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.status__sorting {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.spinner {
+  display: inline-flex;
+  animation: spin 0.9s linear infinite;
+}
+
+/* ─── Visualizer chart ────────────────────────────────────────────────────── */
+.visualizer {
+  padding: 24px 20px 18px;
+}
+
+.visualizer__bars {
+  display: flex;
+  align-items: flex-end;
+  height: 270px;
+  padding: 0 2px;
+  position: relative;
+}
+
+/* ─── Legend ──────────────────────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 12px;
+  flex-wrap: wrap;
+  transition: border-color 0.3s;
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend__label {
+  font-size: 12px;
+}
+
+/* ─── Stat number ─────────────────────────────────────────────────────────── */
+.stat-num {
+  animation: countUp 0.18s ease;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  margin-top: 4px;
+  opacity: 0.5;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Page enter animations ───────────────────────────────────────────────── */
+.page-enter   { animation: fadeSlideIn 0.4s 0.00s ease both; }
+.page-enter-1 { animation: fadeSlideIn 0.4s 0.05s ease both; }
+.page-enter-2 { animation: fadeSlideIn 0.4s 0.10s ease both; }
